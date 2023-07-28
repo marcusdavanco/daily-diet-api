@@ -1,8 +1,8 @@
 import { knex as setupKnex, Knex } from 'knex'
 import { env } from './env'
 
-if(!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL env not found.') 
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL env not found.')
 }
 
 export const config: Knex.Config = {

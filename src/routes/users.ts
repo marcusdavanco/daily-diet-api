@@ -15,22 +15,27 @@ export async function userRoutes(app: FastifyInstance) {
 
     return { user }
   })
-  
-  
+
   app.post('/', async (request, reply) => {
     const createUserBodySchema = z.object({
       name: z.string().min(3),
-      email: z.string().email(),      
+      email: z.string().email(),
     })
 
     const { name, email } = createUserBodySchema.parse(request.body)
 
-    await knex('users')
-      .insert({
-        id: randomUUID(),
-        name,
-        email,         
-      })
+    const id = randomUUID();
+    
+    await knex('users').insert({
+      id,
+      name,
+      email,
+    })
+
+    reply.cookie('userId', id, {
+      path: '/',
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+    })
 
     return reply.status(201).send()
   })
