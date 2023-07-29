@@ -9,7 +9,7 @@ declare module 'knex/module/tables' {
       created_at: string
       updated_at: string
     }
-    
+
     meals: {
       id: string
       name: string
