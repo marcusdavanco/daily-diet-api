@@ -37,18 +37,15 @@ describe('User routes', () => {
 
     const [cookies] = createAccountResponse.get('Set-Cookie')
 
-
     const listUserResponse = await request(app.server)
       .get(`/users/${cookies.split(';')[0].split('userId=')[1]}`)
       .set('Cookie', cookies)
       .expect(200)
 
-    expect(listUserResponse.body.user).toContain(
-      {
-        name: 'John Doe',
-        email: 'johndoe@email.com',
-      }
-    )
+    expect(listUserResponse.body.user).toContain({
+      name: 'John Doe',
+      email: 'johndoe@email.com',
+    })
   })
 
   it(`should be possible to recover the user metrics`, async () => {
