@@ -45,6 +45,8 @@ export async function mealRoutes(app: FastifyInstance) {
     
     return { meal }
   })
+
+  
   
   app.post('/', async (request, reply) => {
     const createMealBodySchema = z.object({
