@@ -1,7 +1,7 @@
 import { it, afterAll, beforeAll, beforeEach, describe, expect } from 'vitest'
 import request from 'supertest'
 import { app } from '../app'
-import { execSync } from 'child_process'
+import { execSync } from 'node:child_process'
 
 describe('User routes', () => {
   beforeAll(async () => {
@@ -49,5 +49,9 @@ describe('User routes', () => {
         email: 'johndoe@email.com',
       }
     )
+  })
+
+  it(`should be possible to recover the user metrics`, async () => {
+    // TODO
   })
 })
