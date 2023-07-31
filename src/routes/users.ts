@@ -42,7 +42,7 @@ export async function userRoutes(app: FastifyInstance) {
       .select('')
 
     const metrics = meals.reduce((acc, meal) => {      
-      acc.meals.push(meal)
+      acc.meals++
       meal.on_diet 
         ? ( acc.mealsOnDiet++, acc.sequenceOfMealsOnDiet++ )
         : ( acc.mealsOffDiet++, acc.sequenceOfMealsOnDiet = 0 )
@@ -51,7 +51,7 @@ export async function userRoutes(app: FastifyInstance) {
         
       return acc
     }, {
-      meals: [],
+      meals: 0,
       mealsOnDiet: 0,
       mealsOffDiet: 0,
       sequenceOfMealsOnDiet: 0,
