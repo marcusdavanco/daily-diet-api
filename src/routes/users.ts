@@ -42,9 +42,15 @@ export async function userRoutes(app: FastifyInstance) {
     const metrics = meals.reduce(
       (acc, meal) => {
         acc.meals++
-        meal.on_diet
-          ? (acc.mealsOnDiet++, acc.sequenceOfMealsOnDiet++)
-          : (acc.mealsOffDiet++, (acc.sequenceOfMealsOnDiet = 0))
+
+        if (meal.on_diet) {
+          acc.mealsOnDiet++
+          acc.sequenceOfMealsOnDiet++
+        } else {
+          acc.mealsOffDiet++
+          acc.sequenceOfMealsOnDiet = 0
+        }
+
         acc.sequenceOfMealsOnDiet > acc.bestSequenceOfMealsOnDiet &&
           (acc.bestSequenceOfMealsOnDiet = acc.sequenceOfMealsOnDiet)
 

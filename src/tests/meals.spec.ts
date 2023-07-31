@@ -45,16 +45,21 @@ describe('Meal routes', () => {
       .send({
         name: 'John Doe',
         email: 'johndoe@email.com',
-      }).expect(201)
+      })
+      .expect(201)
 
     const cookies = createAccountResponse.get('Set-Cookie')
 
-    await request(app.server).post('/meals').set('Cookie', cookies).send({
-      name: 'Birthday Cake',
-      description: 'YUMMY!',
-      date: new Date(),
-      on_diet: false,
-    }).expect(201)
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Birthday Cake',
+        description: 'YUMMY!',
+        date: new Date(),
+        on_diet: false,
+      })
+      .expect(201)
 
     const listMealResponse = await request(app.server)
       .get('/meals')
@@ -71,7 +76,8 @@ describe('Meal routes', () => {
         description: 'NOT YUMMY!',
         date: new Date(),
         on_diet: false,
-      }).expect(204)
+      })
+      .expect(204)
 
     const listUpdatedMealResponse = await request(app.server)
       .get('/meals')
@@ -79,7 +85,7 @@ describe('Meal routes', () => {
       .expect(200)
 
     expect(listUpdatedMealResponse.body.meals[0]).toContain({
-      description: 'NOT YUMMY!'
+      description: 'NOT YUMMY!',
     })
   })
 
@@ -89,16 +95,21 @@ describe('Meal routes', () => {
       .send({
         name: 'John Doe',
         email: 'johndoe@email.com',
-      }).expect(201)
+      })
+      .expect(201)
 
     const cookies = createAccountResponse.get('Set-Cookie')
 
-    await request(app.server).post('/meals').set('Cookie', cookies).send({
-      name: 'Birthday Cake',
-      description: 'YUMMY!',
-      date: new Date(),
-      on_diet: false,
-    }).expect(201)
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Birthday Cake',
+        description: 'YUMMY!',
+        date: new Date(),
+        on_diet: false,
+      })
+      .expect(201)
 
     const listMealResponse = await request(app.server)
       .get('/meals')
@@ -118,60 +129,64 @@ describe('Meal routes', () => {
       .send({
         name: 'John Doe',
         email: 'johndoe@email.com',
-      }).expect(201)
+      })
+      .expect(201)
 
     const cookies = createAccountResponse.get('Set-Cookie')
 
-    await request(app.server).post('/meals').set('Cookie', cookies).send({
-      name: 'Birthday Cake',
-      description: 'YUMMY!',
-      date: new Date(),
-      on_diet: false,
-    }).expect(201)
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Birthday Cake',
+        description: 'YUMMY!',
+        date: new Date(),
+        on_diet: false,
+      })
+      .expect(201)
 
     const listMealResponse = await request(app.server)
       .get('/meals')
       .set('Cookie', cookies)
-      
-      expect(listMealResponse.body.meals).toEqual([
-        expect.objectContaining({name: 'Birthday Cake'})
-      ])
+
+    expect(listMealResponse.body.meals).toEqual([
+      expect.objectContaining({ name: 'Birthday Cake' }),
+    ])
   })
-  
+
   it(`should only be possible to view, edit or remove meals the user created`, async () => {
     const createAccountResponse = await request(app.server)
       .post('/users')
       .send({
         name: 'John Doe',
         email: 'johndoe@email.com',
-      }).expect(201)
+      })
+      .expect(201)
 
     const cookies = createAccountResponse.get('Set-Cookie')
 
-    await request(app.server).post('/meals').set('Cookie', cookies).send({
-      name: 'Birthday Cake',
-      description: 'YUMMY!',
-      date: new Date(),
-      on_diet: false,
-    }).expect(201)
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Birthday Cake',
+        description: 'YUMMY!',
+        date: new Date(),
+        on_diet: false,
+      })
+      .expect(201)
 
     const listMealResponse = await request(app.server)
       .get('/meals')
       .set('Cookie', cookies)
       .expect(200)
 
-      const [meal] = listMealResponse.body.meals
+    const [meal] = listMealResponse.body.meals
 
-      await request(app.server)
-      .get('/meals')
-      .expect(401)
+    await request(app.server).get('/meals').expect(401)
 
-      await request(app.server)
-      .put(`/meals/${meal.id}`)
-      .expect(401)
+    await request(app.server).put(`/meals/${meal.id}`).expect(401)
 
-      await request(app.server)
-      .del(`/meals/${meal.id}`)
-      .expect(401)
+    await request(app.server).del(`/meals/${meal.id}`).expect(401)
   })
 })
