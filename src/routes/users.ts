@@ -25,41 +25,41 @@ export async function userRoutes(app: FastifyInstance) {
 
     const user = await knex('users').where('id', id).first()
 
-    if(!user) {
+    if (!user) {
       reply.status(404).send()
     }
 
     const { userId: ownerId } = request.cookies
 
     console.log(id === ownerId)
-    
-    if(!ownerId || id === ownerId) {
+
+    if (!ownerId || id === ownerId) {
       reply.status(401).send()
     }
 
-    const meals = await knex('meals')
-      .where('owner_id', ownerId)
-      .select('')
+    const meals = await knex('meals').where('owner_id', ownerId).select('')
 
-    const metrics = meals.reduce((acc, meal) => {      
-      acc.meals++
-      meal.on_diet 
-        ? ( acc.mealsOnDiet++, acc.sequenceOfMealsOnDiet++ )
-        : ( acc.mealsOffDiet++, acc.sequenceOfMealsOnDiet = 0 )
-      acc.sequenceOfMealsOnDiet > acc.bestSequenceOfMealsOnDiet
-        && ( acc.bestSequenceOfMealsOnDiet = acc.sequenceOfMealsOnDiet )   
-        
-      return acc
-    }, {
-      meals: 0,
-      mealsOnDiet: 0,
-      mealsOffDiet: 0,
-      sequenceOfMealsOnDiet: 0,
-      bestSequenceOfMealsOnDiet: 0
-    }) 
+    const metrics = meals.reduce(
+      (acc, meal) => {
+        acc.meals++
+        meal.on_diet
+          ? (acc.mealsOnDiet++, acc.sequenceOfMealsOnDiet++)
+          : (acc.mealsOffDiet++, (acc.sequenceOfMealsOnDiet = 0))
+        acc.sequenceOfMealsOnDiet > acc.bestSequenceOfMealsOnDiet &&
+          (acc.bestSequenceOfMealsOnDiet = acc.sequenceOfMealsOnDiet)
+
+        return acc
+      },
+      {
+        meals: 0,
+        mealsOnDiet: 0,
+        mealsOffDiet: 0,
+        sequenceOfMealsOnDiet: 0,
+        bestSequenceOfMealsOnDiet: 0,
+      },
+    )
 
     return metrics
-
   })
 
   app.post('/', async (request, reply) => {
