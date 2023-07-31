@@ -33,7 +33,7 @@ export async function userRoutes(app: FastifyInstance) {
 
     console.log(id === ownerId)
 
-    if (!ownerId || id === ownerId) {
+    if (!ownerId || id !== ownerId) {
       reply.status(401).send()
     }
 
